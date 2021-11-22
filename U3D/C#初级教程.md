@@ -261,9 +261,354 @@ public class TransformFunctions : MonoBehaviour
 
 #### 13.LookAt：让游戏对象的正向指向世界中另一个transform
 
-​	
+```c#
+//CameraLookAt
+using UnityEngine;
+using System.Collections;
 
-​	
+public class CameraLookAt : MonoBehaviour
+{
+    public Transform target;
+    
+    void Update ()
+    {
+        transform.LookAt(target);
+    }
+}
+```
+
+#### 14.线性插值
+
+​	Mathf.Lerp 函数接受 3 个 float 参数：一个 float 参数表示要进行插值的起始值，另一个 float 参数表示要进行插值的结束值，最后一个 float 参数表示要进行插值的距离。在此示例中，插值为 0.5，表示 50%。如果为 0，则函数将返回“from”值；如果为 1，则函数将返回“to”值。
+
+​	Lerp 函数的其他示例包括 Color.Lerp 和 Vector3.Lerp。这些函数的工作方式与 Mathf.Lerp 完全相同，但是“from”和“to”值分别为 Color 和 Vector3 类型。在每个示例中，第三个参数仍然是一个 float 参数，表示要插值的大小。这些函数的结果是找到一种颜色（两种给定颜色的某种混合）以及一个矢量（占两个给定矢量之间的百分比）。
+
+​	使用 Color.Lerp 时适用同样的原理。在 Color 结构中，颜色由代表红色、蓝色、绿色和 Alpha 的 4 个 float 参数表示。使用 Lerp 时，与 Mathf.Lerp 和 Vector3.Lerp 一样，这些 float 数值将进行插值。
+
+```c#
+// 在此示例中，result = 4
+float result = Mathf.Lerp (3f, 5f, 0.5f);
+
+Vector3 from = new Vector3 (1f, 2f, 3f);
+Vector3 to = new Vector3 (5f, 6f, 7f);
+
+// 此处 result = (4, 5, 6)
+Vector3 result = Vector3.Lerp (from, to, 0.75f);
+```
+
+​	<u>**Lerp函数随时间平滑**</u>
+
+​	如果光的强度从 0 开始，则在第一次更新后，其值将设置为 4。下一帧会将其设置为 6，然后设置为 7，再然后设置为 7.5，依此类推。因此，经过几帧后，光强度将趋向于 8，但随着接近目标，其变化速率将减慢。请注意，这是在若干个帧的过程中发生的。如果我们不希望与帧率有关，则可以使用以下代码：
+
+```c#
+void Update ()
+{
+    light.intensity = Mathf.Lerp(light.intensity, 8f, 0.5f * Time.deltaTime);
+}
+```
+
+​	注：对值平滑使用SmoothDamp函数
+
+#### 15.Destroy：运行时移除游戏对象/从游戏对象移除组件
+
+```c#
+//DestroyBasic
+using UnityEngine;
+using System.Collections;
+
+public class DestroyBasic : MonoBehaviour
+{
+    void Update ()
+    {
+        if(Input.GetKey(KeyCode.Space))
+        {
+            Destroy(gameObject);
+        }
+    }
+}
+
+//DestroyOther
+using UnityEngine;
+using System.Collections;
+
+public class DestroyOther : MonoBehaviour
+{
+    public GameObject other;
+    
+    
+    void Update ()
+    {
+        if(Input.GetKey(KeyCode.Space))
+        {
+            Destroy(other);
+        }
+    }
+}
+
+//DestroyComponent
+using UnityEngine;
+using System.Collections;
+
+public class DestroyComponent : MonoBehaviour
+{
+    void Update ()
+    {
+        if(Input.GetKey(KeyCode.Space))
+        {
+            Destroy(GetComponent<MeshRenderer>());
+        }
+    }
+}
+```
+
+#### 16.GetButton and GetKey
+
+```c#
+//KeyInput
+using UnityEngine;
+using System.Collections;
+
+public class KeyInput : MonoBehaviour
+{
+    public GUITexture graphic;
+    public Texture2D standard;
+    public Texture2D downgfx;
+    public Texture2D upgfx;
+    public Texture2D heldgfx;
+    
+    void Start()
+    {
+        graphic.texture = standard;
+    }
+    
+    void Update ()
+    {
+        bool down = Input.GetKeyDown(KeyCode.Space);
+        bool held = Input.GetKey(KeyCode.Space);
+        bool up = Input.GetKeyUp(KeyCode.Space);
+        
+        if(down)
+        {
+            graphic.texture = downgfx;
+        }
+        else if(held)
+        {
+            graphic.texture = heldgfx;
+        }
+        else if(up)
+        {
+            graphic.texture = upgfx;
+        }
+        else
+        {
+            graphic.texture = standard; 
+        }
+        
+        guiText.text = " " + down + "\n " + held + "\n " + up;
+    }
+}
+```
+
+```c#
+//ButtonInput
+using UnityEngine;
+using System.Collections;
+
+public class ButtonInput : MonoBehaviour
+{
+    public GUITexture graphic;
+    public Texture2D standard;
+    public Texture2D downgfx;
+    public Texture2D upgfx;
+    public Texture2D heldgfx;
+    
+    void Start()
+    {
+        graphic.texture = standard;
+    }
+    
+    void Update ()
+    {
+        bool down = Input.GetButtonDown("Jump");
+        bool held = Input.GetButton("Jump");
+        bool up = Input.GetButtonUp("Jump");
+        
+        if(down)
+        {
+            graphic.texture = downgfx;
+        }
+        else if(held)
+        {
+            graphic.texture = heldgfx;
+        }
+        else if(up)
+        {
+            graphic.texture = upgfx;
+        }
+        else
+        {
+            graphic.texture = standard;
+        }
+    
+        guiText.text = " " + down + "\n " + held + "\n " + up;
+    }
+}
+```
+
+#### GetAxis
+
+​	Input.GetAxis：不同于GetKey与GetButton，GetAxis不返回布尔值，而是返回浮点数(介于-1到1之间)。
+
+​	Negitive Button：负按钮
+
+​	Positive Button：正按钮
+
+​	Gravity：滑尺在按钮松开后归零的速度(越高则越快)
+
+​	Dead：值越小操纵杆移动幅度越小
+
+​	Sensitivity：控制输入的返回值到达1/-1的速度(越大则反应速度越快，越小越流畅)
+
+​	Snap：同时按下正负按钮时归零
+
+```c#
+//AxisExample:有平滑
+using UnityEngine;
+using System.Collections;
+
+public class AxisExample : MonoBehaviour
+{
+    public float range;
+    public GUIText textOutput;
+    
+    
+    void Update () 
+    {
+        float h = Input.GetAxis("Horizontal");
+        float xPos = h * range;
+        
+        transform.position = new Vector3(xPos, 2f, 0);
+        textOutput.text = "Value Returned: "+h.ToString("F2");  
+    }
+}
+
+//AxisRawExample:无平滑
+using UnityEngine;
+using System.Collections;
+
+public class AxisRawExample : MonoBehaviour
+{
+    public float range;
+    public GUIText textOutput;
+    
+    
+    void Update () 
+    {
+        float h = Input.GetAxisRaw("Horizontal");
+        float xPos = h * range;
+        
+        transform.position = new Vector3(xPos, 2f, 0);
+        textOutput.text = "Value Returned: "+h.ToString("F2");  
+    }
+}
+
+//DualAxisExample
+using UnityEngine;
+using System.Collections;
+
+public class DualAxisExample : MonoBehaviour 
+{
+    public float range;
+    public GUIText textOutput;
+    
+    
+    void Update () 
+    {
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+        float xPos = h * range;
+        float yPos = v * range;
+        
+        transform.position = new Vector3(xPos, yPos, 0);
+        textOutput.text = "Horizontal Value Returned: "+h.ToString("F2")+"\nVertical Value Returned: "+v.ToString("F2");    
+    }
+}
+```
+
+#### 18.OnMouseDown：检测对碰撞体或GUI文本元素的点击
+
+```c#
+//MouseClick
+using UnityEngine;
+using System.Collections;
+
+public class MouseClick : MonoBehaviour
+{
+    void OnMouseDown ()
+    {
+        rigidbody.AddForce(-transform.forward * 500f);
+        rigidbody.useGravity = true;
+    }
+}
+```
+
+#### 19.GetComponent：访问其他脚本和组件
+
+```c#
+//UsingOtherComponents
+using UnityEngine;
+using System.Collections;
+
+public class UsingOtherComponents : MonoBehaviour
+{
+    public GameObject otherGameObject;
+    
+    
+    private AnotherScript anotherScript;
+    private YetAnotherScript yetAnotherScript;
+    private BoxCollider boxCol;
+    
+    
+    void Awake ()
+    {
+        anotherScript = GetComponent<AnotherScript>();
+        yetAnotherScript = otherGameObject.GetComponent<YetAnotherScript>();
+        boxCol = otherGameObject.GetComponent<BoxCollider>();
+    }
+    
+    
+    void Start ()
+    {
+        boxCol.size = new Vector3(3,3,3);
+        Debug.Log("The player's score is " + anotherScript.playerScore);
+        Debug.Log("The player has died " + yetAnotherScript.numberOfPlayerDeaths + " times");
+    }
+}
+```
+
+```c#
+//AnotherScript
+using UnityEngine;
+using System.Collections;
+
+public class AnotherScript : MonoBehaviour
+{
+    public int playerScore = 9001;
+}
+```
+
+```c#
+//YetAnotherScript
+using UnityEngine;
+using System.Collections;
+
+public class YetAnotherScript : MonoBehaviour
+{
+    public int numberOfPlayerDeaths = 3;
+}
+```
+
+#### 20.DeltaTime
 
 ​	
 
