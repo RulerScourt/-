@@ -1,20 +1,20 @@
 # C#初级教程
 
-##### Scripts as Behavior Components(作为行为组件的脚本)
+#### Scripts as Behavior Components(作为行为组件的脚本)
 
 ​	可应用于对象、环境和工程管理中，显示于Inspector中。
 
-##### Variables and Functions(变量和函数)
+#### Variables and Functions(变量和函数)
 
 ​	设定盒子用法(确定变量类型)—给定盒子编号(命名变量)—装入物品(给定变量内容)。
 
 ​	函数/方法以存储信息的盒子为输入，后返回结果。
 
-##### Conventions and Syntax(约定和语法)
+#### Conventions and Syntax(约定和语法)
 
 ​	关于点运算符、分号、缩进和注释的解释。
 
-##### If Statements(IF语句)
+#### If Statements(IF语句)
 
 ```C#
 using UnityEngine;
@@ -61,7 +61,7 @@ public class IfStatements : MonoBehaviour
 
 ```
 
-##### Loops(循环)
+#### Loops(循环)
 
 ​	重复操作
 
@@ -143,13 +143,13 @@ public class ForeachLoop : MonoBehaviour
 }
 ```
 
-##### Scope and Access Modifiers(作用域和访问修饰符)
+#### Scope and Access Modifiers(作用域和访问修饰符)
 
 ​	变量作用域：代码中可使用此变量的区域
 
 ​	访问修饰符：定义能够看到变量或函数的位置
 
-##### Awake and Start：加载脚本时自动调用的两个函数
+#### Awake and Start：加载脚本时自动调用的两个函数
 
 ​	Awake：即使未启动脚本组件，适用在脚本与初始化之间设置任何引用
 
@@ -157,7 +157,7 @@ public class ForeachLoop : MonoBehaviour
 
 ​	注：Awake和Start在一个对象绑定脚本的生命周期内只能调用一次
 
-##### Update and FixedUpdate：实现每帧更改
+#### Update and FixedUpdate：实现每帧更改
 
 ​	
 
