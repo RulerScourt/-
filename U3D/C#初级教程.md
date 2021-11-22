@@ -608,7 +608,45 @@ public class YetAnotherScript : MonoBehaviour
 }
 ```
 
-#### 20.DeltaTime
+#### 20.DeltaTime：两值之差
+
+​	time类的DeltaTime属性基本指两次更新或固定更新函数调的间隔时长
+
+​	作用：让用于移动其他增量计算的值变得平滑
+
+```c#
+using UnityEngine;
+using System.Collections;
+
+public class UsingDeltaTime : MonoBehaviour
+{
+    public float speed = 8f; 
+    public float countdown = 3.0f;
+
+    
+    void Update ()
+    {
+        countdown -= Time.deltaTime;
+        if(countdown <= 0.0f)
+            light.enabled = true;
+        
+         if(Input.GetKey(KeyCode.RightArrow))
+            transform.position += new Vector3(speed * Time.deltaTime, 0.0f, 0.0f);
+    }   
+}
+```
+
+#### 21.DataTypes(数据类型)
+
+​	值类型：int、float、double、bool、char、Structs(Vector3和Quaternion)
+
+​	引用类型：Classes(Transform和GameObject)
+
+​	区别：值类型包含某个值；引用类型包含值存储位置的存储地址
+
+
+
+
 
 ​	
 
