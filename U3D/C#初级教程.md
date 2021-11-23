@@ -455,7 +455,7 @@ public class ButtonInput : MonoBehaviour
 }
 ```
 
-#### GetAxis
+#### 17.GetAxis
 
 ​	Input.GetAxis：不同于GetKey与GetButton，GetAxis不返回布尔值，而是返回浮点数(介于-1到1之间)。
 
@@ -643,6 +643,156 @@ public class UsingDeltaTime : MonoBehaviour
 ​	引用类型：Classes(Transform和GameObject)
 
 ​	区别：值类型包含某个值；引用类型包含值存储位置的存储地址
+
+```c#
+using UnityEngine;
+using System.Collections;
+
+public class DatatypeScript : MonoBehaviour 
+{
+    void Start () 
+    {
+        //值类型变量
+        Vector3 pos = transform.position;
+        pos = new Vector3(0, 2, 0);
+        
+        //引用类型变量
+        Transform tran = transform;
+        tran.position = new Vector3(0, 2, 0);
+    }
+}
+```
+
+#### 22.Classes(类)
+
+​	若变量 = 盒子、函数 = 机器，则类 = 工厂。
+
+#### 23.Instantiatie函数：用于克隆游戏对象(通常克隆预制体)
+
+```c#
+using UnityEngine;
+using System.Collections;
+
+public class UsingInstantiate : MonoBehaviour
+{
+    public Rigidbody rocketPrefab;
+    public Transform barrelEnd;
+    
+    
+    void Update ()
+    {
+        if(Input.GetButtonDown("Fire1"))
+        {
+            Rigidbody rocketInstance;
+            rocketInstance = Instantiate(rocketPrefab, barrelEnd.position, barrelEnd.rotation) as Rigidbody;
+            rocketInstance.AddForce(barrelEnd.forward * 5000);
+        }
+    }
+}
+```
+
+#### 24.Arrays(数组)：储存同类型数据
+
+#### 25.Invoke函数：将函数调用安排在指定延时后进行
+
+```c#
+//InvokeScript
+using UnityEngine;
+using System.Collections;
+
+public class InvokeScript : MonoBehaviour 
+{
+    public GameObject target;
+    
+    
+    void Start()
+    {
+        Invoke ("SpawnObject", 2);
+        //两秒后生成物品
+        //InvokeRepeating("SpawnObject", 2, 1);
+        //2秒后没过1秒生成一个Object
+        CancelInvoke("SpawnObject");
+        //删除Object
+    }
+    
+    void SpawnObject()
+    {
+        Instantiate(target, new Vector3(0, 2, 0), Quaternion.identity);
+    }
+}
+```
+
+#### 26.Enumerations(枚举)
+
+```C#
+using UnityEngine;
+using System.Collections;
+
+public class EnumScript : MonoBehaviour 
+{
+    enum Direction {North, East, South, West};
+    //默认North = 0，East = 1，South = 1，West = 1
+
+        void Start () 
+    {
+        Direction myDirection;
+        
+        myDirection = Direction.North;
+    }
+    
+    Direction ReverseDirection (Direction dir)
+    {
+        if(dir == Direction.North)
+            dir = Direction.South;
+        else if(dir == Direction.South)
+            dir = Direction.North;
+        else if(dir == Direction.East)
+            dir = Direction.West;
+        else if(dir == Direction.West)
+            dir = Direction.East;
+        
+        return dir;     
+    }
+}
+```
+
+#### 27.Switch语句
+
+```c#
+using UnityEngine;
+using System.Collections;
+
+public class ConversationScript : MonoBehaviour 
+{
+    public int intelligence = 5;
+    
+    
+    void Greet()
+    {
+        switch (intelligence)
+        {
+        case 5:
+            print ("Why hello there good sir! Let me teach you about Trigonometry!");
+            break;
+        case 4:
+            print ("Hello and good day!");
+            break;
+        case 3:
+            print ("Whadya want?");
+            break;
+        case 2:
+            print ("Grog SMASH!");
+            break;
+        case 1:
+            print ("Ulg, glib, Pblblblblb");
+            break;
+        default:
+            print ("Incorrect intelligence level.");
+            break;
+        }
+    }
+}
+```
 
 
 
